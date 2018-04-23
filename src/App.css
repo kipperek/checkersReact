@@ -1,25 +1,41 @@
 .App {
   text-align: center;
+  padding-top:50px;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.row>div{
+  display: inline-block;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.field{
+  width: 70px;
+  height:70px;
 }
 
-.App-title {
-  font-size: 1.5em;
+.field.black{
+  background: #5a5a5a;
 }
 
-.App-intro {
-  font-size: large;
+.board {
+  border: 1px solid #5a5a5a;
+  display: inline-block;
+  font-size: 0;
+}
+
+.soldier{
+  width:40px;
+  height: 40px;
+  margin: 15px;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius:100%;
+  background: white;
+}
+.soldier.black{
+  background: #b52929;
+}
+.soldier.active{
+  background: yellow;
 }
 
 @keyframes App-logo-spin {
