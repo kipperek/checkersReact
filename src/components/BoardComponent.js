@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import store from 'warcaby/reducers';
-
 import FieldComponent from 'warcaby/components/FieldComponent';
 
-import Game from 'warcaby/classes/Game';
-
 class BoardComponent extends Component {
-  constructor(){
+  constructor(props){
     super();
     this.state = {}
   }
@@ -19,11 +15,25 @@ class BoardComponent extends Component {
       </div>
     )
   }
-  
+
   renderBoard() {
     return (
-      this.props.board && this.props.board.map(this.renderRow)
+      this.state.board && this.state.board.map(this.renderRow)
     )
+  }
+
+  updateItems(props){
+    this.setState({
+      board: props.board
+    });
+  }
+
+  componentDidMount() {
+    this.updateItems(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateItems(nextProps);
   }
 
   render() {

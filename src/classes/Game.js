@@ -5,51 +5,67 @@ import Soldier from './Soldier';
 import Player from './Player';
 
 class Game {
-  constructor() {
-    this.initBoard();
-    this.initSoldiers();
-    this.initPlayer();
+  static initGame() {
+    let board = this.initBoard();
+    let soldiers = this.initSoldiers(board);
+    let player = this.initPlayer();
 
     store.dispatch({
       type: ACTIONS.GAME.INIT_GAME,
       data: {
-        soldiers: this._soldiers,
-        board: this._board,
-        player: this._player,
-        game: this
+        soldiers: soldiers,
+        board: board,
+        player: player
       }
     });
   }
 
-  initBoard() {
-    this._board = [];
+  static initBoard() {
+    let board = [];
     for(let x=0;x<8;x++){
-      this._board.push([]);
+      board.push([]);
       for(let y=0; y<8;y++){
-        this._board[x].push( { row: x, column: y, id: x*8+y, isBlack: (x*8+y) % 2 !== x%2 } );
+        board[x].push( { row: x, column: y, id: x*8+y, isBlack: (x*8+y) % 2 !== x%2 } );
       }
     }
+
+    return board;
+  };
+
+  static initSoldiers(board) {
+    let soldiers = [];
+    soldiers = soldiers.concat(this.setInitSoldiers(0, 3, 'black', board));
+    soldiers = soldiers.concat(this.setInitSoldiers(5, 8, 'white', board));
+
+    return soldiers;
   }
 
-  initSoldiers() {
-    this._soldiers = {};
-    this.setInitSoldiers(0, 3, 'black');
-    this.setInitSoldiers(5, 8, 'white');
+  static initPlayer() {
+    return new Player('white');
   }
 
-  initPlayer() {
-    this._player = new Player('white');
-  }
-
-  setInitSoldiers(from, to, color) {
+  static setInitSoldiers(from, to, color, board) {
+    let soldiers = [];
     for(let x=from;x<to;x++){
       for(let y=0; y<8;y++){
-        if(this._board[x][y].isBlack){
-          this._soldiers[`${x}_${y}`] = new Soldier(color, x, y);
+        if(board[x][y].isBlack){
+          soldiers.push(new Soldier(color, x, y));
         }
       }
     }
+
+    return soldiers;
   }
+
+  // static generateNewSoldiers(soldiers){
+  //   let newSoldiers = {};
+  //
+  //   for(let i in soldiers){
+  //     let x = soldiers[]
+  //
+  //     newSoldiers[`${x}_${y}`] = new Soldier(color, x, y);
+  //   }
+  // }
 }
 
 export default Game;

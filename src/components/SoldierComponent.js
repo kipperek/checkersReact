@@ -4,35 +4,57 @@ import store from 'warcaby/reducers';
 import ACTIONS from 'warcaby/actions';
 
 import Helper from 'warcaby/classes/Helper';
-import Game from 'warcaby/classes/Game';
+// import Game from 'warcaby/classes/Game';
+import Soldier from 'warcaby/classes/Soldier';
 
 class SoldierComponent extends Component {
-  activateSoldier(soldier) {
-    let player = this.props.player;
-    if(!player.myMove || soldier.color !== player.color) return;
+  constructor(){
+    super();
+    this.state = {};
+  }
 
-    soldier.active = true;
+  updateItems(props){
+    let x = this.props.field.row;
+    let y = this.props.field.column;
+
+    this.setState({
+      soldier: Soldier.find(x, y, props.soldiers),
+      player: props.player
+    });
+  }
+
+  componentDidMount() {
+    this.updateItems(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.updateItems(nextProps);
+  }
+
+  activateSoldier() {
+    let soldier = this.state.soldier;
+    let player = this.state.player;
+    if(!player.myMove || soldier.color !== player.color) return;
 
     store.dispatch({
       type: ACTIONS.GAME.ACTIVATE_SOLDIER,
-      data: {
-        soldier: Game.generateNewSoldiers(this.props.soldiers)
-      }
-    })
+      soldier: soldier.id
+    });
   }
 
   render() {
-    let x = this.props.field.row,  y = this.props.field.column;
-    let soldier = this.props.soldiers[`${x}_${y}`];
+    let soldier = this.state.soldier;
+    if(!soldier) return null;
 
     let classes = Helper.classes({
       'soldier': soldier !== undefined,
+      'king': soldier && soldier.isKing,
       'black': soldier && soldier.color === 'black',
       'active': soldier && soldier.active
     });
 
     return (
-      <div className={classes} onClick={()=> this.activateSoldier(soldier) }>
+      <div className={classes} onClick={()=> this.activateSoldier() }>
       </div>
     );
   }

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import store from 'warcaby/reducers';
 
 import Helper from 'warcaby/classes/Helper';
 import SoldierComponent from 'warcaby/components/SoldierComponent.js';

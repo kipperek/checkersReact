@@ -1,14 +1,21 @@
 import ACTIONS from 'warcaby/actions';
-import Game from 'warcaby/classes/Game';
 
 let GameReducer = function(state = {}, action){
   switch(action.type){
     case ACTIONS.GAME.INIT_GAME:
       return Object.assign({}, state, { ...action.data });
 
-    case ACIONS.GAME.ACTIVATE_SOLDIER:
-      return Object.assign({}, state, { soldiers: action.soldiers });
+    case ACTIONS.GAME.ACTIVATE_SOLDIER:
+      let soldiers = state.soldiers.map( (item) => {
+        return {
+          ...item,
+          active: action.soldier === item.id
+        }
+      });
+      return Object.assign({}, state, { soldiers });
 
+    case ACTIONS.GAME.SHOW_POSSIBLE_MOVES:
+      return Object.assign({}, state, { possibleMoves: action.possibleMoves });
   }
 
   return state;
