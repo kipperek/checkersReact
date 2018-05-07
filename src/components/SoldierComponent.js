@@ -19,7 +19,8 @@ class SoldierComponent extends Component {
 
     this.setState({
       soldier: Soldier.find(x, y, props.soldiers),
-      player: props.player
+      move: props.move,
+      isBeating: props.isBeating
     });
   }
 
@@ -33,8 +34,8 @@ class SoldierComponent extends Component {
 
   activateSoldier() {
     let soldier = this.state.soldier;
-    let player = this.state.player;
-    if(!player.myMove || soldier.color !== player.color) return;
+    let move = this.state.move;
+    if(this.state.isBeating || move !== 'white' || soldier.color !== 'white') return;
 
     store.dispatch({
       type: ACTIONS.GAME.ACTIVATE_SOLDIER,
@@ -63,7 +64,8 @@ class SoldierComponent extends Component {
 const mapStateToProps = function(store) {
   return {
     soldiers: store.gameState.soldiers,
-    player: store.gameState.player
+    isBeating: store.gameState.isBeating,
+    move: store.gameState.move
   };
 }
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import FieldComponent from 'warcaby/components/FieldComponent';
+import Game from 'warcaby/classes/Game';
 
 class BoardComponent extends Component {
   constructor(props){
@@ -22,9 +23,14 @@ class BoardComponent extends Component {
     )
   }
 
-  updateItems(props){
+  updateItems(props, oldProps){
+    if(props.move === 'black' && this.state.move === 'white'){
+      Game.makeComputerMove(props.board, props.soldiers);
+    }
+
     this.setState({
-      board: props.board
+      board: props.board,
+      move: props.move
     });
   }
 
@@ -32,8 +38,8 @@ class BoardComponent extends Component {
     this.updateItems(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.updateItems(nextProps);
+  componentWillReceiveProps(nextProps, oldProps) {
+    this.updateItems(nextProps, oldProps);
   }
 
   render() {
@@ -47,7 +53,9 @@ class BoardComponent extends Component {
 
 const mapStateToProps = function(store) {
   return {
-    board: store.gameState.board
+    board: store.gameState.board,
+    move: store.gameState.move,
+    soldiers: store.gameState.soldiers
   };
 }
 

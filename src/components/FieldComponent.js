@@ -17,7 +17,6 @@ class FieldComponent extends Component {
     let y = this.props.field.column;
 
     this.setState({
-      soldiers: this.props.soldiers,
       possibleMove: props.possibleMoves && props.possibleMoves.filter((item) => {
         return item.x === x && item.y === y;
       })[0]
@@ -34,7 +33,7 @@ class FieldComponent extends Component {
 
   comonMakeAmoveOnMe(){
     if(!this.state.possibleMove) return;
-    Game.makeMove(this.state.possibleMove, this.state.soldiers);
+    Game.makeMove(this.state.possibleMove, this.props.soldiers, null, this.props.board);
   }
 
   render() {
@@ -55,7 +54,9 @@ class FieldComponent extends Component {
 const mapStateToProps = function(store) {
   return {
     possibleMoves: store.gameState.possibleMoves,
-    soldiers: store.gameState.soldiers
+    soldiers: store.gameState.soldiers,
+    board: store.gameState.board,
+    move: store.gameState.move
   };
 }
 

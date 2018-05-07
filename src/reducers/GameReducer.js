@@ -18,10 +18,12 @@ let GameReducer = function(state = {}, action){
       return Object.assign({}, state, { soldiers, possibleMoves });
 
     case ACTIONS.GAME.SHOW_POSSIBLE_MOVES:
-      return Object.assign({}, state, { possibleMoves: action.possibleMoves });
+      return Object.assign({}, state, { possibleMoves: action.possibleMoves, isBeating: action.isBeating });
 
     case ACTIONS.GAME.REFRESH_SOLDIERS:
-      return Object.assign({}, state, { soldiers: action.soldiers });
+      let move = state.move;
+      move = action.changeMove ? (move === 'white' ? 'black' : 'white') : move;
+      return Object.assign({}, state, { move: move, soldiers: action.soldiers });
   }
 
   return state;
