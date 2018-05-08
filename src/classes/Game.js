@@ -149,11 +149,14 @@ class Game {
         ...nextMove
       });
     }else{
-      return nextMove;
+      return {
+        ...nextMove,
+        soldiers: newSoldiers
+      };
     }
   }
 
-  static makeComputerMove(board, soldiers, moveThis){
+  static makeComputerMove(board, soldiers, moveThis, moves){
     let mySoldiers, withMove;
     if(!moveThis){
       mySoldiers = soldiers.filter((item)=>{
@@ -166,18 +169,21 @@ class Game {
     }
 
     moveThis = moveThis || withMove[0];
+    moves = moves || Game.findPossibleMoves(soldiers, 'black', board, false, moveThis);
 
-    let computerMove = (moves) => {
-      if(Game.makeMove(moves[0], soldiers, moveThis, board, 'black').isBeating){
-        Game.makeComputerMove(board, soldiers, moveThis);
+    let computerMove = () => {
+
+      let moveMade = Game.makeMove(moves[0], soldiers, moveThis, board, 'black');
+
+      if(moveMade.isBeating){
+        Game.makeComputerMove(board, moveMade.soldiers, moveThis, moveMade.possibleMoves);
+      }else{
+
       }
     };
 
     if(moveThis){
-      setTimeout(function(){
-        let moves = Game.findPossibleMoves(soldiers, 'black', board, false, moveThis);
-        computerMove(moves);
-      },500);
+      setTimeout(computerMove,500);
     }
   }
 }
